@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html ng-app="app">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<script src="angular-1.4.6.min.js"></script>
+		<link rel="stylesheet" href="../bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/css/bootstrap.css">
+		<script src="../bootstrap-3.3.7-dist/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+		<title></title>
+		<style>
+		*{
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+		ul{
+			overflow: hidden;
+		}
+		li{
+			float: left;
+			width: 20%;
+		}
+		</style>
+	</head>
+	<body>
+		<div ng-controller="Ctrl">
+			<div class="col-lg-6">
+				<div class="input-group">
+			<input type="text" ng-model="c" placeholder="请输入城市名称" class="form-control" />
+			<span class="input-group-btn">
+			<button ng-click="btn()" class="btn btn-default">查询</button>
+				  </span>
+				</div><!-- /input-group -->
+			</div><!-- /.col-lg-6 -->
+
+			<ul>
+				<li ng-repeat="i in data">
+					<h3>{{i.date|myFilter}}</h3>
+					<p>温度：<span>{{i.temperature}}</span></p>
+					<p>白天
+						<img ng-src="{{i.dayPictureUrl}}" alt="">
+					</p>
+					<p>夜晚
+						<img ng-src="{{i.nightPictureUrl}}" alt="">
+					</p>
+					<p>天气：<span>{{i.weather}}</span></p>
+					<p>风力：<span>{{i.wind}}</span></p>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript">
+	var app=angular.module("app",[]);
+	app.controller("Ctrl",function($scope,$http){
+
+		$scope.btn=function(){
+			$http({
+				url:"baiduWeather.php?city="+$scope.c,
+				method:"get"
+			}).success(function(d){
+				$scope.data=d.results[0].weather_data;
+			})
+		}
+	})
+		app.filter("myFilter",function(){
+			return function(str){
+				return str.substr(0,2);
+			}
+		})
+	</script>
+</html>

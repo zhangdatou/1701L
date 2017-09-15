@@ -1,0 +1,3 @@
+   url:"baiduWeather.php?city="+"±±¾©"
+    method:get
+    data:{data:"",error:0,results:[{weather_data:[{},{},{},{}]}]}
